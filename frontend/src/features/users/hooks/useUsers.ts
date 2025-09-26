@@ -11,17 +11,17 @@ export const useUsers = () => {
             .then((data: ApiResponse) => {
                 setUsers(data.data);
             })
-            .catch((error) => console.error('Error fetching users:', error));
     }, []);
 
     const addUser = async (newUser: UserFormData) => {
+        console.log(JSON.stringify({user: newUser}));
         try {
             const response = await fetch('http://localhost:4000/api/users', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'applications/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newUser),
+                body: JSON.stringify({user: newUser}),
             });
 
             if (!response.ok) {
@@ -29,7 +29,7 @@ export const useUsers = () => {
             }
 
             const createdUserResponse = await response.json();
-            setUsers((prevUsers) => [...prevUsers, createdUserResponse.data]);
+            setUsers(prevUsers => [...prevUsers, createdUserResponse.data]);
         } catch (error) {
             console.error('Error creating user:', error);
         }

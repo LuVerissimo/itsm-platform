@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, ApiResponse } from '../types';
-
-type NewUser = Omit<User, 'id'>;
+import { UserFormData } from '../types/userSchema';
 
 export const useUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -15,7 +14,7 @@ export const useUsers = () => {
             .catch((error) => console.error('Error fetching users:', error));
     }, []);
 
-    const addUser = async (newUser: NewUser) => {
+    const addUser = async (newUser: UserFormData) => {
         try {
             const response = await fetch('http://localhost:4000/api/users', {
                 method: 'POST',
@@ -30,7 +29,6 @@ export const useUsers = () => {
             }
 
             const createdUserResponse = await response.json();
-
             setUsers((prevUsers) => [...prevUsers, createdUserResponse.data]);
         } catch (error) {
             console.error('Error creating user:', error);

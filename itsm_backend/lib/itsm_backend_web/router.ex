@@ -21,9 +21,10 @@ defmodule ItsmBackendWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ItsmBackendWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ItsmBackendWeb do
+    pipe_through :api
+    resources "/users", UserController, except: [:new, :edit]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:itsm_backend, :dev_routes) do

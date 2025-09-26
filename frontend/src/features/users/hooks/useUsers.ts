@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { User, ApiResponse } from '../types';
 
+type NewUser = Omit<User, 'id'>;
+
 export const useUsers = () => {
     const [users, setUsers] = useState<User[]>([]);
 
@@ -13,5 +15,27 @@ export const useUsers = () => {
             .catch((error) => console.error('Error fetching users:', error));
     }, []);
 
-    return { users };
+    const addUser = async (newUser: NewUser) => {
+        try {
+            const response = await fetch('http://localhost:4000/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'applications/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create a user');
+            }
+
+            const createdUserResponse = await response.json();
+
+            setUsers((prevUsers) => [...prevUsers, createdUserResponse.data]);
+        } catch (error) {
+            console.error('Error creating user:', error);
+        }
+    };
+
+    return { users, addUser };
 };

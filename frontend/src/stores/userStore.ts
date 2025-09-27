@@ -19,7 +19,9 @@ export const useUserStore = create<UserState>((set, get) => ({
     editingUser: null,
     isModalOpen: false,
 
-    openEditModal: (user) => set({ isModalOpen: true, editingUser: user }),
+    openEditModal: (user) => {
+        set({ isModalOpen: true, editingUser: user })
+    },
     closeEditModal: () => set({ isModalOpen: false, editingUser: null }),
 
     fetchUsers: async () => {

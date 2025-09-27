@@ -31,7 +31,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
     updateUser: async (userId: string, updateUser: UserFormData) => {
         const response = await fetch(
-            `http://localhost:4000/api/users/{userId}`,
+            `http://localhost:4000/api/users/${userId}`,
             {
                 method: 'PUT',
                 headers: {
@@ -49,7 +49,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     },
 
     deleteUser: async (userId: string) => {
-        await fetch(`http://localhost:4000/api/users/{userId}`, {
+        await fetch(`http://localhost:4000/api/users/${userId}`, {
             method: 'DELETE',
         });
         set((state) => ({

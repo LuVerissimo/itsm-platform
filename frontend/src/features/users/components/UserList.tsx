@@ -1,8 +1,13 @@
-import { useUsers } from '../hooks/useUsers';
+import { useEffect } from 'react';
+import { useUserStore } from '../../../stores/userStore';
 import { UserForm } from './userForm';
 
 export const UserList = () => {
-    const { users, addUser, deleteUser } = useUsers();
+    const { users, fetchUsers, addUser, deleteUser } = useUserStore();
+
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
 
     const handleDelete = (userId: string) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
@@ -12,9 +17,10 @@ export const UserList = () => {
 
     return (
         <div className="p-4 md:p-8">
+            {/* UserForm gets the addUser action from the store */}
             <UserForm onAddUser={addUser} />
 
-            <h1 className="text-2xl font-bold text-slate-800 mb-4">
+            <h1 className="text-2xl font-bold text-slate-800 my-4">
                 ITSM Platform Users
             </h1>
             <div className="space-y-4">
@@ -35,12 +41,7 @@ export const UserList = () => {
                             </span>
                         </div>
                         <div className="flex gap-2">
-                            <button
-                                onClick={() =>
-                                    alert('Edit functionality is next!')
-                                }
-                                className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 transition"
-                            >
+                            <button className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 transition">
                                 Edit
                             </button>
                             <button

@@ -17,7 +17,6 @@ export const UserList = () => {
 
     return (
         <div className="p-4 md:p-8">
-            {/* UserForm gets the addUser action from the store */}
             <UserForm onAddUser={addUser} />
 
             <h1 className="text-2xl font-bold text-slate-800 my-4">

@@ -1,0 +1,59 @@
+import { create } from 'zustand';
+import { User } from '../features/users/types';
+import { UserFormData } from '../features/users/types/userSchema';
+
+interface UserState {
+    users: User[];
+    fetchUsers: () => Promise<void>;
+    addUser: (newUser: UserFormData) => Promise<void>;
+    updateUser: (userId: string, updateUser: UserFormData) => Promise<void>;
+    deleteUser: (userId: string) => Promise<void>;
+}
+
+export const useUserStore = create<UserState>((set, get) => ({
+    users: [],
+
+    fetchUsers: async () => {
+        const response = await fetch('http://localhost:4000/api/users');
+        const { data } = await response.json();
+        set({ users: data });
+    },
+
+    addUser: async (newUser) => {
+        const response = await fetch('http://localhost:4000/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: newUser }),
+        });
+        const { data } = await response.json();
+        set((state) => ({ users: [...state.users, data] }));
+    },
+
+    updateUser: async (userId: string, updateUser: UserFormData) => {
+        const response = await fetch(
+            `http://localhost:4000/api/users/{userId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user: updateUser }),
+            }
+        );
+        const { data } = await response.json();
+        set((state) => ({
+            users: state.users.map((user) =>
+                user.id === userId ? data : user
+            ),
+        }));
+    },
+
+    deleteUser: async (userId: string) => {
+        await fetch(`http://localhost:4000/api/users/{userId}`, {
+            method: 'DELETE',
+        });
+        set((state) => ({
+            users: state.users.filter((user) => user.id !== userId),
+        }));
+    },
+}));

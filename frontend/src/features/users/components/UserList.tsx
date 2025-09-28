@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useUserStore } from '../../../stores/userStore';
-import { UserForm } from './userForm';
+import { UserForm } from './UserForm';
 import { EditUserModal } from './EditUserModal';
 
 export const UserList = () => {

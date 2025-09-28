@@ -15,7 +15,6 @@ export const TicketForm = ({ onAddTicket }: TicketFormProps) => {
         formState: { errors },
     } = useForm<TicketFormData>({
         resolver: zodResolver(ticketSchema),
-        // Set default values for the dropdowns
         defaultValues: {
             priority: 'low',
             status: 'open',
@@ -23,7 +22,7 @@ export const TicketForm = ({ onAddTicket }: TicketFormProps) => {
     });
     const onSubmit: SubmitHandler<TicketFormData> = (data) => {
         onAddTicket(data);
-        reset(); // Reset the form after submission
+        reset();
     };
 
     return (

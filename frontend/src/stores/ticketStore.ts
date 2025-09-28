@@ -6,6 +6,11 @@ interface TicketState {
     tickets: Ticket[];
     fetchTickets: () => Promise<void>;
     addTicket: (ticket: TicketFormData) => Promise<void>;
+    updateTicket: (
+        ticketId: string,
+        updatedTicket: TicketFormData
+    ) => Promise<void>;
+    deleteTicket: (ticketId: string) => Promise<void>;
 }
 
 export const useTicketStore = create<TicketState>((set, get) => ({
@@ -40,6 +45,55 @@ export const useTicketStore = create<TicketState>((set, get) => ({
             set((state) => ({ tickets: [...state.tickets, data] }));
         } catch (error) {
             console.error('Failed to create ticket: ', error);
+        }
+    },
+
+    updateTicket: async (ticketId, updatedData) => {
+        try {
+            const response = await fetch(
+                `http://localhost:4000/api/tickets/${ticketId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ticket: updatedData }),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to update ticket');
+            }
+            const { data: updatedTicket } = await response.json();
+            set((state) => ({
+                tickets: state.tickets.map((ticket) =>
+                    ticket.id === ticketId ? updatedTicket : ticket
+                ),
+            }));
+        } catch (error) {
+            console.error('Error updating ticket');
+        }
+    },
+
+    deleteTicket: async (ticketId) => {
+        try {
+            const response = await fetch(
+                `http://localhost:4000/api/tickets/${ticketId}`,
+                {
+                    method: 'DELETE',
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to delete ticket');
+            }
+            set((state) => ({
+                tickets: state.tickets.filter(
+                    (ticket) => ticket.id !== ticketId
+                ),
+            }));
+        } catch (error) {
+            console.error('Error updating ticket');
         }
     },
 }));

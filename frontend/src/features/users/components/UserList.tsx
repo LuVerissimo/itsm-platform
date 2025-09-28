@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useUserStore } from '../../../stores/userStore';
-import { UserForm } from './userForm';
+import { UserForm } from './UserForm';
+import { EditUserModal } from './EditUserModal';
 
 export const UserList = () => {
-    const { users, fetchUsers, addUser, deleteUser } = useUserStore();
+    const { users, fetchUsers, addUser, deleteUser, openEditModal } =
+        useUserStore();
 
     useEffect(() => {
         fetchUsers();
@@ -17,8 +19,9 @@ export const UserList = () => {
 
     return (
         <div className="p-4 md:p-8">
-            {/* UserForm gets the addUser action from the store */}
             <UserForm onAddUser={addUser} />
+
+            <EditUserModal />
 
             <h1 className="text-2xl font-bold text-slate-800 my-4">
                 ITSM Platform Users
@@ -40,8 +43,15 @@ export const UserList = () => {
                                 {user.role}
                             </span>
                         </div>
+
                         <div className="flex gap-2">
-                            <button className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 transition">
+                            <button
+                                onClick={() => {
+                                    console.log('Opening modal for', user);
+                                    openEditModal(user);
+                                }}
+                                className="px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 transition"
+                            >
                                 Edit
                             </button>
                             <button

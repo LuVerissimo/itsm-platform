@@ -4,6 +4,10 @@ import { UserFormData } from '../features/users/types/userSchema';
 
 interface UserState {
     users: User[];
+    editingUser: User | null;
+    isModalOpen: boolean;
+    openEditModal: (user: User) => void;
+    closeEditModal: () => void;
     fetchUsers: () => Promise<void>;
     addUser: (newUser: UserFormData) => Promise<void>;
     updateUser: (userId: string, updateUser: UserFormData) => Promise<void>;
@@ -12,6 +16,13 @@ interface UserState {
 
 export const useUserStore = create<UserState>((set, get) => ({
     users: [],
+    editingUser: null,
+    isModalOpen: false,
+
+    openEditModal: (user) => {
+        set({ isModalOpen: true, editingUser: user })
+    },
+    closeEditModal: () => set({ isModalOpen: false, editingUser: null }),
 
     fetchUsers: async () => {
         const response = await fetch('http://localhost:4000/api/users');

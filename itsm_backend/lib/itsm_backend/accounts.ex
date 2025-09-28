@@ -101,4 +101,17 @@ defmodule ItsmBackend.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_user_by_email(email) do
+    Repo.get_by(User, email: email)
+  end
+
+  def authenticate_user(email, password) do
+    with %User{} = user <- get_user_by_email(email),
+         true <- Bcrypt.verify_pass(password, user.password_hash) do
+      {:ok, user}
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
 end

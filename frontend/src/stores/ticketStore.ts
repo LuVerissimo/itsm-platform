@@ -31,12 +31,14 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
     addTicket: async (newTicket) => {
         try {
+            const payload = { ...newTicket, user_id: 1}
+            
             const response = await fetch('http://localhost:4000/api/tickets', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ticket: newTicket }),
+                body: JSON.stringify({ ticket: payload }),
             });
             if (!response.ok) {
                 throw new Error('Error creating ticket');
@@ -50,6 +52,8 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
     updateTicket: async (ticketId, updatedData) => {
         try {
+            const payload = { ...updatedData, user_id: 1}
+            
             const response = await fetch(
                 `http://localhost:4000/api/tickets/${ticketId}`,
                 {
@@ -57,7 +61,7 @@ export const useTicketStore = create<TicketState>((set, get) => ({
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ ticket: updatedData }),
+                    body: JSON.stringify({ ticket: payload }),
                 }
             );
 

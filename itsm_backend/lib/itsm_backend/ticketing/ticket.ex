@@ -8,6 +8,7 @@ defmodule ItsmBackend.Ticketing.Ticket do
     field :status, Ecto.Enum, values: [:open, :in_progress, :closed]
     field :priority, Ecto.Enum, values: [:low, :medium, :high]
 
+    belongs_to :user, ItsmBackend.Accounts.User
     timestamps(type: :utc_datetime)
   end
 

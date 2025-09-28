@@ -7,6 +7,7 @@ defmodule ItsmBackend.Accounts.User do
     field :email, :string
     field :role, :string
 
+    has_many :tickets, ItsmBackend.Ticketing.Ticket
     timestamps(type: :utc_datetime)
   end
 

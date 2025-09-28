@@ -5,8 +5,8 @@ defmodule ItsmBackend.Ticketing.Ticket do
   schema "tickets" do
     field :title, :string
     field :description, :string
-    field :status, :string
-    field :priority, :string
+    field :status, Ecto.Enum, values: [:open, :in_progress, :closed]
+    field :priority, Ecto.Enum, values: [:low, :medium, :high]
 
     timestamps(type: :utc_datetime)
   end

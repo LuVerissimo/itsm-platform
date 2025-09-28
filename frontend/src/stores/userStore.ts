@@ -1,8 +1,12 @@
 import { create } from 'zustand';
 import { User } from '../features/users/types';
 import { UserFormData } from '../features/users/types/userSchema';
+import { email } from 'zod';
 
 interface UserState {
+    currentUser: User | null;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
     users: User[];
     editingUser: User | null;
     isModalOpen: boolean;
@@ -15,12 +19,33 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
+    currentUser: null,
+
+    login: async (email: string, password: string) => {
+        const response = await fetch('api/sessions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+        if (response.ok) {
+            const { data } = await response.json();
+            set({ currentUser: data });
+        } else {
+            alert('Login failed');
+        }
+    },
+
+    logout: async () => {
+        await fetch('api/sessions', { method: 'DELETE' });
+        set({ currentUser: null });
+    },
+
     users: [],
     editingUser: null,
     isModalOpen: false,
 
     openEditModal: (user) => {
-        set({ isModalOpen: true, editingUser: user })
+        set({ isModalOpen: true, editingUser: user });
     },
     closeEditModal: () => set({ isModalOpen: false, editingUser: null }),
 

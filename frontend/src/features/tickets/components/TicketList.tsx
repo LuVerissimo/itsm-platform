@@ -29,6 +29,7 @@ export const TicketList = () => {
             <TicketForm onAddTicket={addTicket} />
 
             <h1 className="my-4 text-2xl font-bold text-slate-800">Tickets</h1>
+
             <div className="space-y-4">
                 {tickets.length > 0 ? (
                     tickets.map((ticket) => (
@@ -67,7 +68,11 @@ export const TicketList = () => {
                             <p className="mt-2 text-sm text-slate-600">
                                 {ticket.description}
                             </p>
-                            <div className="mt-4">
+                            <div className="mt-4 flex items-center justify-between">
+                                <span className="text-xs font-medium text-slate-500">
+                                    Created by:{' '}
+                                    {ticket.user ? ticket.user.name : 'N/A'}
+                                </span>
                                 <span className="text-xs font-medium text-slate-500">
                                     Priority: {ticket.priority}
                                 </span>

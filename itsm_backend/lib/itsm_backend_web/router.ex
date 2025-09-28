@@ -24,6 +24,7 @@ defmodule ItsmBackendWeb.Router do
   scope "/api", ItsmBackendWeb do
     pipe_through(:api)
     resources("/users", UserController, except: [:new, :edit])
+    resources("/tickets", TicketController, except: [:new, :edit])
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

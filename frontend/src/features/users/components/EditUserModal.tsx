@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -6,7 +6,7 @@ import { useUserStore } from '../../../stores/userStore';
 import { userSchema, UserFormData } from '../types/userSchema';
 import { Button } from '../../../components/Button';
 
-export const EditUserModal: React.FC = () => {
+export const EditUserModal = () => {
     const { isModalOpen, editingUser, closeEditModal, updateUser } =
         useUserStore();
 

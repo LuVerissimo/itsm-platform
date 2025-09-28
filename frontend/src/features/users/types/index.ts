@@ -5,7 +5,6 @@ export interface User {
   role: string;
 }
 
-// Defines the shape of the API response from our Phoenix backend
 export interface ApiResponse {
   data: User[];
 }

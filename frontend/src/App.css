@@ -203,9 +203,15 @@
   .inline-block {
     display: inline-block;
   }
+  /*
+  this was causing issues with the for headless ui dialog 
+  change to .custom-min-h-screen 
+  scope it so it doesn’t override Tailwind’s built-in one:
   .min-h-screen {
     min-height: 100vh;
-  }
+} 
+    */
+
   .max-w-4xl {
     max-width: var(--container-4xl);
   }

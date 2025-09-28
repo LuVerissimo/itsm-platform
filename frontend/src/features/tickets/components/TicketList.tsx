@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useTicketStore } from '../../../stores/ticketStore';
+import { TicketForm } from './TicketForm';
 
 export const TicketList = () => {
-    const { tickets, fetchTickets } = useTicketStore();
+    const { tickets, fetchTickets, addTicket } = useTicketStore();
 
     useEffect(() => {
         fetchTickets();
@@ -10,6 +11,8 @@ export const TicketList = () => {
 
     return (
         <div className="p-4 md:p-8">
+            <TicketForm onAddTicket={addTicket} />
+
             <h1 className="text-2xl font-bold text-slate-800 mb-4">Tickets</h1>
             <div className="space-y-4">
                 {tickets.length > 0 ? (

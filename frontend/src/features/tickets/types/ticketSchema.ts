@@ -10,6 +10,7 @@ export const ticketSchema = z.object({
     priority: z.enum(['low', 'medium', 'high'], {
         message: 'Priority must be one of: low, medium, high',
     }),
+
     status: z.enum(['open', 'in_progress', 'closed'], {
         message: 'Status must be one of: open, in_progress, closed',
     }),

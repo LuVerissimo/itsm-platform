@@ -17,7 +17,7 @@ defmodule ItsmBackendWeb.Router do
   scope "/", ItsmBackendWeb do
     pipe_through(:browser)
 
-  get("/", PageController, :home)
+    get("/", PageController, :home)
   end
 
   # Other scopes may use custom stacks.
@@ -25,7 +25,9 @@ defmodule ItsmBackendWeb.Router do
     pipe_through(:api)
     resources("/users", UserController, except: [:new, :edit])
     resources("/tickets", TicketController, except: [:new, :edit])
-    resources("/sessions", SessionController, except: [:new, :edit])
+
+    resources("/sessions", SessionController, except: :create)
+    resources("/sessions", SessionController, except: :delete)
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

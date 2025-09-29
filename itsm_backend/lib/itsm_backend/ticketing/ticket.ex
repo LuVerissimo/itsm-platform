@@ -3,19 +3,19 @@ defmodule ItsmBackend.Ticketing.Ticket do
   import Ecto.Changeset
 
   schema "tickets" do
-    field :title, :string
-    field :description, :string
-    field :status, Ecto.Enum, values: [:open, :in_progress, :closed]
-    field :priority, Ecto.Enum, values: [:low, :medium, :high]
+    field(:title, :string)
+    field(:description, :string)
+    field(:status, Ecto.Enum, values: [:open, :in_progress, :closed])
+    field(:priority, Ecto.Enum, values: [:low, :medium, :high])
 
-    belongs_to :user, ItsmBackend.Accounts.User
+    belongs_to(:user, ItsmBackend.Accounts.User)
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(ticket, attrs) do
     ticket
-    |> cast(attrs, [:title, :description, :status, :priority])
-    |> validate_required([:title, :description, :status, :priority])
+    |> cast(attrs, [:title, :description, :status, :priority, :user_id])
+    |> validate_required([:title, :description, :status, :priority, :user_id])
   end
 end

@@ -21,7 +21,13 @@ defmodule ItsmBackendWeb.TicketJSON do
       title: ticket.title,
       description: ticket.description,
       status: ticket.status,
-      priority: ticket.priority
+      priority: ticket.priority,
+      user: ItsmBackendWeb.UserJSON.user(%{user: ticket.user})
     }
+  end
+
+  defp format_user(nil), do: nil
+  defp format_user(user) do
+    %{id: user.id, name: user.name, email: user.email}
   end
 end

@@ -2,12 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { TicketFormData, ticketSchema } from '../types/ticketSchema';
 import { Button } from '../../../components/Button';
+import { useUserStore } from '../../../stores/userStore';
 
 interface TicketFormProps {
-    onAddTicket: (ticket: TicketFormData) => void;
+    onAddTicket: (ticket: TicketFormData, id: string) => void;
 }
 
 export const TicketForm = ({ onAddTicket }: TicketFormProps) => {
+    const { currentUser} = useUserStore();
     const {
         register,
         handleSubmit,
@@ -21,8 +23,12 @@ export const TicketForm = ({ onAddTicket }: TicketFormProps) => {
         },
     });
     const onSubmit: SubmitHandler<TicketFormData> = (data) => {
-        onAddTicket(data);
-        reset();
+        if (currentUser) {
+            onAddTicket(data, currentUser.id);//?
+            reset();
+        } else {
+            alert("No user is logged in.")
+        }
     };
 
     return (

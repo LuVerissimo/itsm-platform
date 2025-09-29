@@ -22,7 +22,7 @@ defmodule ItsmBackendWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> clear_session()
+    |> configure_session(drop: true)
     |> send_resp(204, "")
   end
 end

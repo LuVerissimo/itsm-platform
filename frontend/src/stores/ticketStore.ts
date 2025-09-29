@@ -5,10 +5,11 @@ import { TicketFormData } from '../features/tickets/types/ticketSchema';
 interface TicketState {
     tickets: Ticket[];
     fetchTickets: () => Promise<void>;
-    addTicket: (ticket: TicketFormData) => Promise<void>;
+    addTicket: (ticket: TicketFormData, userId: string) => Promise<void>;
     updateTicket: (
         ticketId: string,
-        updatedTicket: TicketFormData
+        updatedTicket: TicketFormData,
+        userId: string
     ) => Promise<void>;
     deleteTicket: (ticketId: string) => Promise<void>;
 }
@@ -31,9 +32,9 @@ export const useTicketStore = create<TicketState>((set, get) => ({
         }
     },
 
-    addTicket: async (newTicket) => {
+    addTicket: async (newTicket, userId) => {
         try {
-            const payload = { ...newTicket, user_id: 1 };
+            const payload = { ...newTicket, user_id: userId };
 
             const response = await fetch('http://localhost:4000/api/tickets', {
                 method: 'POST',
@@ -41,6 +42,7 @@ export const useTicketStore = create<TicketState>((set, get) => ({
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ ticket: payload }),
+                credentials: 'include',
             });
             if (!response.ok) {
                 throw new Error('Error creating ticket');
@@ -52,9 +54,9 @@ export const useTicketStore = create<TicketState>((set, get) => ({
         }
     },
 
-    updateTicket: async (ticketId, updatedData) => {
+    updateTicket: async (ticketId, updatedData, userId) => {
         try {
-            const payload = { ...updatedData, user_id: 1 };
+            const payload = { ...updatedData, user_id: userId };
 
             const response = await fetch(
                 `http://localhost:4000/api/tickets/${ticketId}`,
@@ -64,6 +66,7 @@ export const useTicketStore = create<TicketState>((set, get) => ({
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ ticket: payload }),
+                    credentials: 'include',
                 }
             );
 

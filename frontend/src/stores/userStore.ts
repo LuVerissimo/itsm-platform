@@ -3,6 +3,11 @@ import { User } from '../features/users/types';
 import { UserFormData } from '../features/users/types/userSchema';
 
 interface UserState {
+    currentUser: User | null;
+    loading: boolean;
+    checkAuth: () => Promise<void>;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
     users: User[];
     editingUser: User | null;
     isModalOpen: boolean;
@@ -15,12 +20,53 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
+    currentUser: null,
+    loading: true,
+    checkAuth: async () => {
+        try {
+            const response = await fetch('http://localhost:4000/api/users/me', {
+                credentials: 'include',
+            });
+            if (response.ok) {
+                const { data } = await response.json();
+                set({ currentUser: data, loading: false });
+            } else {
+                throw new Error('Not authenticated');
+            }
+        } catch (error) {
+            set({ currentUser: null, loading: false });
+        }
+    },
+
+    login: async (email: string, password: string) => {
+        const response = await fetch('http://localhost:4000/api/sessions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include',
+        });
+        if (response.ok) {
+            const { data } = await response.json();
+            set({ currentUser: data, loading: false });
+        } else {
+            alert('Login failed');
+        }
+    },
+
+    logout: async () => {
+        await fetch('api/sessions', {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        set({ currentUser: null, loading: false });
+    },
+
     users: [],
     editingUser: null,
     isModalOpen: false,
 
     openEditModal: (user) => {
-        set({ isModalOpen: true, editingUser: user })
+        set({ isModalOpen: true, editingUser: user });
     },
     closeEditModal: () => set({ isModalOpen: false, editingUser: null }),
 

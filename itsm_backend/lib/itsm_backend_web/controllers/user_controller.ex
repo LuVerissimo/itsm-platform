@@ -4,7 +4,7 @@ defmodule ItsmBackendWeb.UserController do
   alias ItsmBackend.Accounts
   alias ItsmBackend.Accounts.User
 
-  action_fallback ItsmBackendWeb.FallbackController
+  action_fallback(ItsmBackendWeb.FallbackController)
 
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -38,6 +38,17 @@ defmodule ItsmBackendWeb.UserController do
 
     with {:ok, %User{}} <- Accounts.delete_user(user) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def me(conn, _params) do
+    case get_session(conn, :user_id) do
+      nil ->
+        conn |> put_status(401) |> json(%{error: "Not authenticated"})
+
+      user_id ->
+        user = Accounts.get_user!(user_id)
+        render(conn, :show, user: user)
     end
   end
 end

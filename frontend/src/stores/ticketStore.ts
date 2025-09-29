@@ -18,7 +18,9 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
     fetchTickets: async () => {
         try {
-            const response = await fetch('http://localhost:4000/api/tickets');
+            const response = await fetch('http://localhost:4000/api/tickets', {
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch tickets');
             }
@@ -31,8 +33,8 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
     addTicket: async (newTicket) => {
         try {
-            const payload = { ...newTicket, user_id: 1}
-            
+            const payload = { ...newTicket, user_id: 1 };
+
             const response = await fetch('http://localhost:4000/api/tickets', {
                 method: 'POST',
                 headers: {
@@ -52,8 +54,8 @@ export const useTicketStore = create<TicketState>((set, get) => ({
 
     updateTicket: async (ticketId, updatedData) => {
         try {
-            const payload = { ...updatedData, user_id: 1}
-            
+            const payload = { ...updatedData, user_id: 1 };
+
             const response = await fetch(
                 `http://localhost:4000/api/tickets/${ticketId}`,
                 {

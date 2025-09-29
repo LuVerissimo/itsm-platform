@@ -6,6 +6,7 @@ defmodule ItsmBackend.Accounts.User do
     field :name, :string
     field :email, :string
     field :role, :string
+    field :password_hash, :string
 
     has_many :tickets, ItsmBackend.Ticketing.Ticket
     timestamps(type: :utc_datetime)
@@ -14,7 +15,7 @@ defmodule ItsmBackend.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :role])
+    |> cast(attrs, [:name, :email, :role, :password_hash])
     |> validate_required([:name, :email, :role])
   end
 end

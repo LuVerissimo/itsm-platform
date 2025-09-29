@@ -22,7 +22,7 @@ config :itsm_backend, ItsmBackendWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
   check_origin: false,
   code_reloader: true,
-  plug: {CORSPlug, origins: ["http://localhost:3000"]},
+  plug: {CORSPlug, origins: ["http://localhost:3000"], credentials: "true"},
   debug_errors: true,
   secret_key_base: "4LHnCfHIoajDy7LoY8rdASTQmY8oqRZYn18yeSqCROpzvFgVKyLAy5GvY/WN3mpd",
   watchers: [

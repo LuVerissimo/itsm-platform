@@ -2,10 +2,15 @@ import { useUserStore } from './stores/userStore';
 import { LoginForm } from './features/auth/components/LoginForm';
 import MainApp from './MainApp';
 import './App.css';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-    const { currentUser } = useUserStore();
+    useAuth();
+    const { currentUser, loading } = useUserStore();
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
     if (!currentUser) {
         return <LoginForm />;
     }

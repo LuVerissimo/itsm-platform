@@ -3,20 +3,21 @@ defmodule ItsmBackendWeb.TicketController do
 
   alias ItsmBackend.Ticketing
   alias ItsmBackend.Ticketing.Ticket
+  alias ItsmBackend.Repo
 
   action_fallback ItsmBackendWeb.FallbackController
 
   def index(conn, _params) do
-    tickets = Ticketing.list_tickets()
+    tickets = Ticketing.list_tickets_with_users()
     render(conn, :index, tickets: tickets)
   end
 
   def create(conn, %{"ticket" => ticket_params}) do
     with {:ok, %Ticket{} = ticket} <- Ticketing.create_ticket(ticket_params) do
+      preloaded_ticket = Repo.preload(ticket, :user)
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/tickets/#{ticket}")
-      |> render(:show, ticket: ticket)
+      |> render(:show, ticket: preloaded_ticket)
     end
   end
 

@@ -54,11 +54,12 @@ export const useUserStore = create<UserState>((set, get) => ({
     },
 
     logout: async () => {
-        await fetch('api/sessions', {
+        await fetch('http://localhost:4000/api/sessions', {
             method: 'DELETE',
             credentials: 'include',
         });
         set({ currentUser: null, loading: false });
+        window.location.reload();
     },
 
     users: [],

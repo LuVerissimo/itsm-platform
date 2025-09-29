@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { Ticket } from '../types';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../../../components/Button';
+import { useUserStore } from '../../../stores/userStore';
 
 interface EditTicketModalProps {
     ticket: Ticket | null;
@@ -19,6 +20,7 @@ export const EditTicketModal = ({
     onClose,
 }: EditTicketModalProps) => {
     const { updateTicket } = useTicketStore();
+    const { currentUser} = useUserStore();
 
     const {
         register,
@@ -36,9 +38,11 @@ export const EditTicketModal = ({
     }, [ticket, reset]);
 
     const onSubmit: SubmitHandler<TicketFormData> = (data) => {
-        if (ticket) {
-            updateTicket(ticket.id, data);
+        if (ticket && currentUser) {
+            updateTicket(ticket.id, data, currentUser.id);
             onClose();
+        } else {
+            alert("No user is logged in.")
         }
     };
 

@@ -21,6 +21,12 @@ defmodule ItsmBackend.Ticketing do
     Repo.all(Ticket)
   end
 
+  def list_tickets_with_users do
+    Ticket
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
   @doc """
   Gets a single ticket.
 

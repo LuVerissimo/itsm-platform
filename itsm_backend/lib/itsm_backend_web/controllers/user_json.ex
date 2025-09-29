@@ -23,4 +23,8 @@ defmodule ItsmBackendWeb.UserJSON do
       role: user.role
     }
   end
+
+  def user(%{user: user}) do
+    %{id: user.id, name: user.name, email: user.email}
+  end
 end

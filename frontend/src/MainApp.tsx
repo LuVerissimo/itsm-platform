@@ -40,15 +40,21 @@ export function MainApp() {
                             Users
                         </button>
                     )}
-
+                </nav>
+                <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-slate-700">
+                        Welcome, {currentUser?.name}
+                    </span>
                     <Button onClick={logout} variant="secondary">
                         Logout
                     </Button>
-                </nav>
+                </div>
             </header>
             <main className="relative z-0 max-w-4xl mx-auto">
                 {currentView === 'tickets' && <TicketList />}
-                {currentView === 'users' && <UserList />}
+                {currentView === 'users' && currentUser?.role === 'admin' && (
+                    <UserList />
+                )}
             </main>
         </div>
     );

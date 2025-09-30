@@ -2,7 +2,7 @@ defmodule ItsmBackendWeb.AuthPlug do
 
   import Plug.Conn
 
-  def init(ops), do: opts
+  def init(opts), do: opts
 
   def call(conn, _opts) do
     if get_session(conn, :user_id) do

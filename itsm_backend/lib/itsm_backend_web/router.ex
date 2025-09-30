@@ -15,6 +15,12 @@ defmodule ItsmBackendWeb.Router do
     plug(:fetch_session)
   end
 
+  pipeline :api_auth do
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+    plug(ItsmBackendWeb.AuthPlug)
+  end
+
   scope "/", ItsmBackendWeb do
     pipe_through(:browser)
 
@@ -24,14 +30,13 @@ defmodule ItsmBackendWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", ItsmBackendWeb do
     pipe_through(:api)
-
-    get("/users/me", UserController, :me)
-
-    resources("/users", UserController, except: [:new, :edit])
-    resources("/tickets", TicketController, except: [:new, :edit])
-
     post("/sessions", SessionController, :create)
     delete("/sessions", SessionController, :delete)
+
+    pipe_through(:api_auth)
+    get("/users/me", UserController, :me)
+    resources("/users", UserController, except: [:new, :edit])
+    resources("/tickets", TicketController, except: [:new, :edit])
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

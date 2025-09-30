@@ -6,7 +6,7 @@ import { useUserStore } from './stores/userStore';
 
 export function MainApp() {
     const [currentView, setCurrentView] = useState('tickets');
-    const { logout } = useUserStore();
+    const { logout, currentUser } = useUserStore();
 
     const navLinkClasses =
         'px-4 py-2 rounded-md text-sm font-medium transition';
@@ -27,24 +27,34 @@ export function MainApp() {
                     >
                         Tickets
                     </button>
-                    <button
-                        onClick={() => setCurrentView('users')}
-                        className={`${navLinkClasses} ${
-                            currentView === 'users'
-                                ? activeLinkClasses
-                                : inactiveLinkClasses
-                        }`}
-                    >
-                        Users
-                    </button>
+
+                    {currentUser?.role === 'admin' && (
+                        <button
+                            onClick={() => setCurrentView('users')}
+                            className={`${navLinkClasses} ${
+                                currentView === 'users'
+                                    ? activeLinkClasses
+                                    : inactiveLinkClasses
+                            }`}
+                        >
+                            Users
+                        </button>
+                    )}
+                </nav>
+                <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-slate-700">
+                        Welcome, {currentUser?.name}
+                    </span>
                     <Button onClick={logout} variant="secondary">
                         Logout
                     </Button>
-                </nav>
+                </div>
             </header>
             <main className="relative z-0 max-w-4xl mx-auto">
                 {currentView === 'tickets' && <TicketList />}
-                {currentView === 'users' && <UserList />}
+                {currentView === 'users' && currentUser?.role === 'admin' && (
+                    <UserList />
+                )}
             </main>
         </div>
     );

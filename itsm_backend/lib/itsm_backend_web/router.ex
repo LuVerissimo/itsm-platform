@@ -21,6 +21,13 @@ defmodule ItsmBackendWeb.Router do
     plug(ItsmBackendWeb.AuthPlug)
   end
 
+  pipeline :api_admin do
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+    plug(ItsmBackendWeb.AuthPlug)
+    plug(ItsmBackendWeb.AdminAuthPlug)
+  end
+
   scope "/", ItsmBackendWeb do
     pipe_through(:browser)
 
@@ -35,8 +42,10 @@ defmodule ItsmBackendWeb.Router do
 
     pipe_through(:api_auth)
     get("/users/me", UserController, :me)
-    resources("/users", UserController, except: [:new, :edit])
     resources("/tickets", TicketController, except: [:new, :edit])
+
+    pipe_through(:api_admin)
+    resources("/users", UserController, except: [:new, :edit])
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

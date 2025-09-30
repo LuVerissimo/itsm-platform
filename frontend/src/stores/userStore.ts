@@ -72,7 +72,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     closeEditModal: () => set({ isModalOpen: false, editingUser: null }),
 
     fetchUsers: async () => {
-        const response = await fetch('http://localhost:4000/api/users');
+        const response = await fetch('http://localhost:4000/api/users', {credentials: 'include'});
         const { data } = await response.json();
         set({ users: data });
     },

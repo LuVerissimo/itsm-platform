@@ -6,7 +6,7 @@ import { useUserStore } from './stores/userStore';
 
 export function MainApp() {
     const [currentView, setCurrentView] = useState('tickets');
-    const { logout } = useUserStore();
+    const { logout, currentUser } = useUserStore();
 
     const navLinkClasses =
         'px-4 py-2 rounded-md text-sm font-medium transition';
@@ -27,16 +27,20 @@ export function MainApp() {
                     >
                         Tickets
                     </button>
-                    <button
-                        onClick={() => setCurrentView('users')}
-                        className={`${navLinkClasses} ${
-                            currentView === 'users'
-                                ? activeLinkClasses
-                                : inactiveLinkClasses
-                        }`}
-                    >
-                        Users
-                    </button>
+
+                    {currentUser?.role === 'admin' && (
+                        <button
+                            onClick={() => setCurrentView('users')}
+                            className={`${navLinkClasses} ${
+                                currentView === 'users'
+                                    ? activeLinkClasses
+                                    : inactiveLinkClasses
+                            }`}
+                        >
+                            Users
+                        </button>
+                    )}
+
                     <Button onClick={logout} variant="secondary">
                         Logout
                     </Button>

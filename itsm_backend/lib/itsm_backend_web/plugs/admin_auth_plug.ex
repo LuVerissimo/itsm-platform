@@ -1,5 +1,6 @@
 defmodule ItsmBackendWeb.AdminAuthPlug do
-
+  import Plug.Conn
+  alias ItsmBackend.Accounts
 
   def init(opts), do: opts
 
@@ -12,7 +13,7 @@ defmodule ItsmBackendWeb.AdminAuthPlug do
     else
       conn
       |> put_status(:forbidden)
-      |> Phoenix.Controller.json(%{error, "Admin access required"})
+      |> Phoenix.Controller.json(%{error: "Admin access required"})
       |> halt()
     end
   end

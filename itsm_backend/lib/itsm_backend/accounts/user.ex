@@ -9,6 +9,7 @@ defmodule ItsmBackend.Accounts.User do
     field :password_hash, :string
 
     has_many :tickets, ItsmBackend.Ticketing.Ticket
+    has_many :articles, ItsmBackend.KnowledgeBase.Article
     timestamps(type: :utc_datetime)
   end
 

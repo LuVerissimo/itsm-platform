@@ -43,6 +43,7 @@ defmodule ItsmBackendWeb.Router do
     pipe_through(:api_auth)
     get("/users/me", UserController, :me)
     resources("/tickets", TicketController, except: [:new, :edit])
+    resources("/articles", ArticleController, except: [:new, :edit])
 
     pipe_through(:api_admin)
     resources("/users", UserController, except: [:new, :edit])

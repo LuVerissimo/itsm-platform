@@ -13,10 +13,11 @@ defmodule ItsmBackendWeb.ArticleController do
 
   def create(conn, %{"article" => article_params}) do
     with {:ok, %Article{} = article} <- KnowledgeBase.create_article(article_params) do
+      preloaded_article = Repo.preload(article, :user)
       conn
       |> put_status(:created)
       |> put_resp_header("location", ~p"/api/articles/#{article}")
-      |> render(:show, article: article)
+      |> render(:show, article: preloaded_article)
     end
   end
 

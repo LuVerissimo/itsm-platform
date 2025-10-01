@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TicketList } from './features/tickets/components/TicketList';
 import { Button } from './components/Button';
 import { useUserStore } from './stores/userStore';
+import { ArticleList } from './features/articles/components/ArticleList';
 
 export function MainApp() {
     const [currentView, setCurrentView] = useState('tickets');
@@ -40,6 +41,17 @@ export function MainApp() {
                             Users
                         </button>
                     )}
+
+                    <button
+                        onClick={() => setCurrentView('articles')}
+                        className={`${navLinkClasses} ${
+                            currentView === 'articles'
+                                ? activeLinkClasses
+                                : inactiveLinkClasses
+                        }`}
+                    >
+                        Articles
+                    </button>
                 </nav>
                 <div className="flex items-center gap-4">
                     <span className="text-sm font-medium text-slate-700">
@@ -55,6 +67,7 @@ export function MainApp() {
                 {currentView === 'users' && currentUser?.role === 'admin' && (
                     <UserList />
                 )}
+                {currentView === 'articles' && <ArticleList />}
             </main>
         </div>
     );

@@ -19,7 +19,13 @@ defmodule ItsmBackendWeb.ArticleJSON do
     %{
       id: article.id,
       title: article.title,
-      content: article.content
+      content: article.content,
+      user: ItsmBackendWeb.UserJSON.user(%{user: article.user})
     }
+  end
+
+  defp format_user(nil), do: nil
+  defp format_user(user) do
+    %{id: user.id, name: user.name, email: user.email}
   end
 end
